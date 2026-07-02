@@ -19,6 +19,7 @@ import {
 } from '@/components/ui'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { useAuthStore } from '@/store/authStore'
+import { logout as apiLogout } from '@/features/auth/api/authApi'
 import { cn } from '@/utils/cn'
 
 interface HeaderProps {
@@ -34,11 +35,12 @@ const NOTIFICATIONS = [
 export function Header({ onMenuClick }: HeaderProps) {
   const navigate = useNavigate()
   const user = useAuthStore((s) => s.user)
-  const logout = useAuthStore((s) => s.logout)
+  const logoutStore = useAuthStore((s) => s.logout)
   const unread = NOTIFICATIONS.filter((n) => n.unread).length
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout = async () => {
+    await apiLogout()
+    logoutStore()
     navigate('/login', { replace: true })
   }
 

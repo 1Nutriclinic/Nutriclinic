@@ -34,6 +34,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { useAuthStore } from '@/store/authStore'
 import { BRAND_COLORS, MOCK_NOTIFICATIONS, MOCK_ROLES } from '../data/mockSettings'
 import { LANGUAGES, ROLE_LABELS, type SupportedLanguage } from '../types'
+import { UserManagementPanel } from '../components/UserManagementPanel'
 
 export function SettingsPage() {
   const user = useAuthStore((s) => s.user)
@@ -79,6 +80,7 @@ export function SettingsPage() {
         <Tabs defaultValue="profile">
           <TabsList className="mb-4 flex-wrap">
             <TabsTrigger value="profile" icon={<User className="h-4 w-4" />}>Perfil</TabsTrigger>
+            <TabsTrigger value="users" icon={<Users className="h-4 w-4" />}>Usuarios</TabsTrigger>
             <TabsTrigger value="roles" icon={<Users className="h-4 w-4" />}>Roles</TabsTrigger>
             <TabsTrigger value="language" icon={<Globe className="h-4 w-4" />}>Idioma</TabsTrigger>
             <TabsTrigger value="branding" icon={<Palette className="h-4 w-4" />}>Marca</TabsTrigger>
@@ -126,6 +128,10 @@ export function SettingsPage() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagementPanel />
           </TabsContent>
 
           <TabsContent value="roles">

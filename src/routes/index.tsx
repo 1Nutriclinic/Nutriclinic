@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { DashboardLayout } from '@/layouts/DashboardLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
-import { GuestRoute, ProtectedRoute } from './guards'
+import { GuestRoute, PortalGuestRoute, PortalProtectedRoute, ProtectedRoute } from './guards'
 import { LoginPage } from '@/features/auth/pages/LoginPage'
 import { ForgotPasswordPage } from '@/features/auth/pages/ForgotPasswordPage'
 import { DashboardPage } from '@/features/dashboard/pages/DashboardPage'
@@ -30,6 +30,9 @@ import { AuditPage } from '@/features/audit/pages/AuditPage'
 import { IntegrationsPage } from '@/features/integrations/pages/IntegrationsPage'
 import { MarketplacePage } from '@/features/marketplace/pages/MarketplacePage'
 import { SettingsPage } from '@/features/settings/pages/SettingsPage'
+import { PortalLoginPage } from '@/features/patient-portal/pages/PortalLoginPage'
+import { PortalHomePage } from '@/features/patient-portal/pages/PortalHomePage'
+import { PortalLayout } from '@/layouts/PortalLayout'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { MODULES, renderModuleElement } from './moduleRoutes'
 
@@ -50,6 +53,23 @@ export const router = createBrowserRouter([
         { path: '/login', element: <LoginPage /> },
         { path: '/forgot-password', element: <ForgotPasswordPage /> },
       ]},
+    ],
+  },
+  {
+    element: <PortalGuestRoute />,
+    children: [
+      { path: '/portal/login', element: <PortalLoginPage /> },
+    ],
+  },
+  {
+    element: <PortalProtectedRoute />,
+    children: [
+      {
+        element: <PortalLayout />,
+        children: [
+          { path: '/portal', element: <PortalHomePage /> },
+        ],
+      },
     ],
   },
   {

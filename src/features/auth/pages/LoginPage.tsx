@@ -7,6 +7,7 @@ import { AlertCircle, Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { Button, Input, Label } from '@/components/ui'
 import { loginSchema, type LoginFormValues } from '../schemas/authSchemas'
 import { useLogin } from '../hooks/useAuth'
+import { usingSupabaseAuth } from '../api/authApi'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -24,7 +25,9 @@ export function LoginPage() {
 
   const onSubmit = (values: LoginFormValues) => {
     login.mutate(values, {
-      onSuccess: () => navigate('/dashboard', { replace: true }),
+      onSuccess: (data) => {
+        navigate(data.user.role === 'patient' ? '/portal' : '/dashboard', { replace: true })
+      },
     })
   }
 
@@ -116,9 +119,23 @@ export function LoginPage() {
       </form>
 
       <div className="mt-6 rounded-lg border border-dashed border-border bg-muted/40 px-4 py-3 text-center text-xs text-muted-foreground">
-        <span className="font-semibold text-foreground">Demo:</span> usa{' '}
-        <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">demo@nutriclinic.pro</code>{' '}
-        y cualquier contraseña de 6+ caracteres.
+        {usingSupabaseAuth() ? (
+          <>
+            <span className="font-semibold text-foreground">Supabase activo.</span>{' '}
+            Usa las credenciales creadas en Configuración → Usuarios.
+          </>
+        ) : (
+          <>
+            <span className="font-semibold text-foreground">Demo:</span> usa{' '}
+            <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">demo@nutriclinic.pro</code>{' '}
+            y cualquier contraseña de 6+ caracteres.
+          </>
+        )}
+        <p className="mt-2">
+          <Link to="/portal/login" className="font-medium text-primary hover:underline">
+            Portal del paciente →
+          </Link>
+        </p>
       </div>
     </motion.div>
   )
